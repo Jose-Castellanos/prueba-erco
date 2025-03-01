@@ -36,7 +36,7 @@ DB_HOST=pt-postgres
    ```sh
    docker ps
    ```
-5. Accede desde el navegador al puerto localhost:8080 aqui podrás probar cada endpoint.
+5. Accede desde el navegador al puerto localhost:8080 aqui podrás probar cada endpoint para cada proceso.
 
 6. De ser necesario para bajar los contenedores puede utilizar desde una poweshel:
     ```sh
