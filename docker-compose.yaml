@@ -1,0 +1,34 @@
+services:
+  pt-backend:
+    container_name: pt-backend
+    command: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+    build:
+      context: app/
+      dockerfile: ../Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+    - ./app:/app
+    env_file:
+      - .env
+    depends_on:
+      pt-postgres:
+        condition: service_healthy
+  
+  pt-postgres:
+    image: postgres:latest
+    container_name: pt-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydatabase
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+      - ./data:/pt-data
+    ports:
+      - "5432:5432"
+volumes:
+  pg_data:
+
