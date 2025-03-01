@@ -221,7 +221,7 @@ def system_load_report() -> List[SystemLoadResponse]:
         logger.error(f"Error fetching system load data: {e}")
         raise
 
-def calculate_single_concept(client_id: int, year: int, month: int, concept: str) -> List[ClientInvoiceResponse]:
+def calculate_single_concept(client_id: int, year: int, month: int, concept: str) -> Dict[str, float]:
     try:
         with db.get_connection() as conn:
             cur = conn.cursor()
