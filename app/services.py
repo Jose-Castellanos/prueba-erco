@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
 from exceptions import BillingError, ClientNotFoundError
-from schemas import ClientStatsResponse, SystemLoadResponse
+from schemas import ClientStatsResponse, SystemLoadResponse,ClientInvoiceResponse
 from database import db
 import logging
 from datetime import datetime
@@ -27,12 +27,13 @@ def calculate_energy_bill(client_id: int, year: int, month: int) -> Dict[str, fl
                 ee2_quantity = calculate_ee2(total_injection,total_consumption)
                 ee_2_cost_total= calculate_tarif_ee2(client_id, start_date, end_date, cur, ee2_quantity, total_consumption)
 
-                return {
-                    "Energia_Activa": float(total_concept_energy_active),
-                    "Excedentes_Energia": float(commercialization_energy["total_concept"]),
-                    "Excedentes_Energia_1": float(ee1_cost),
-                    "Excedentes_Energia_2": float(ee_2_cost_total)
-                }
+                result = ClientInvoiceResponse(
+                    Energia_Activa=float(total_concept_energy_active),
+                    Excedentes_Energia=float(commercialization_energy["total_concept"]),
+                    Excedentes_Energia_1=float(ee1_cost),
+                    Excedentes_Energia_2=float(ee_2_cost_total)
+                )
+                return [result] 
     except Exception as e:
         logger.error(f"Error calculating bill for client {client_id}: {e}")
         raise
@@ -235,10 +236,10 @@ def calculate_single_concept(client_id: int, year: int, month: int, concept: str
                 total_injection = commercialization_energy["total_injection"]
 
                 ee2_quantity = calculate_ee2(total_injection,total_consumption)
-                if concept.lower() == "ea":     
+                if concept.lower() == "ea":   
                     return {
                     "Costo energia activa":float(total_concept_energy_active)
-                }
+                    }
                 elif concept.lower() == "ee1":
                     ee1_quantity = min(total_consumption, total_injection)
                     return {
