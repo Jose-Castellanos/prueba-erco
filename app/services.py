@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
 from exceptions import BillingError, ClientNotFoundError
-from schemas import ClientStatsResponse, SystemLoadResponse, ClientInvoiceResponse, ConceptResponse
+from schemas import ClientStatsResponse, SystemLoadResponse
 from database import db
 import logging
 from datetime import datetime
@@ -10,7 +10,7 @@ from starlette import status
 
 logger = logging.getLogger(__name__)
 
-def calculate_energy_bill(client_id: int, year: int, month: int) -> List[ClientInvoiceResponse]:
+def calculate_energy_bill(client_id: int, year: int, month: int) -> Dict[str, float]:
     try:
         with db.get_connection() as conn:
             cur = conn.cursor()
