@@ -29,6 +29,11 @@ services:
       - ./data:/pt-data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "admin"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
 volumes:
   pg_data:
 
