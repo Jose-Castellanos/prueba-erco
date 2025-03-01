@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
 from exceptions import BillingError, ClientNotFoundError
-from schemas import ClientStatsResponse, SystemLoadResponse
+from schemas import ClientStatsResponse, SystemLoadResponse, ClientInvoiceResponse, ConceptResponse
 from database import db
 import logging
 from datetime import datetime
@@ -10,7 +10,7 @@ from starlette import status
 
 logger = logging.getLogger(__name__)
 
-def calculate_energy_bill(client_id: int, year: int, month: int) -> Dict[str, float]:
+def calculate_energy_bill(client_id: int, year: int, month: int) -> List[ClientInvoiceResponse]:
     try:
         with db.get_connection() as conn:
             cur = conn.cursor()
@@ -221,7 +221,7 @@ def system_load_report() -> List[SystemLoadResponse]:
         logger.error(f"Error fetching system load data: {e}")
         raise
 
-def calculate_single_concept(client_id: int, year: int, month: int, concept: str) -> dict[str, float]:
+def calculate_single_concept(client_id: int, year: int, month: int, concept: str) -> List[ClientInvoiceResponse]:
     try:
         with db.get_connection() as conn:
             cur = conn.cursor()
