@@ -23,6 +23,12 @@ class ClientStatsRequest(BaseModel):
                 }
             }
 
+class ClientInvoiceResponse(BaseModel):
+    Energia_Activa: float
+    Excedentes_Energia: float
+    Excedentes_Energia_1: float
+    Excedentes_Energia_2: float
+
 class ClientStatsResponse(BaseModel):
     month: str
     total_consumption: float
@@ -32,6 +38,6 @@ class SystemLoadResponse(BaseModel):
     timestamp: datetime
     hourly_load: float
 
-
-
-
+class ConceptResponse(BaseModel):
+    concept : float
+   
