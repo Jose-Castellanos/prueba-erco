@@ -1,7 +1,7 @@
 from typing import  List
 from fastapi import APIRouter, HTTPException, Path
 from pydantic import PositiveInt
-from schemas import  ClientInvoiceResponse, ClientStatsResponse, ConceptResponse, InvoiceRequest, SystemLoadResponse
+from schemas import  ClientInvoiceResponse, ClientStatsResponse, InvoiceRequest, SystemLoadResponse
 from services import calculate_energy_bill, calculate_single_concept, client_report, system_load_report, validate_client_id
 from exceptions import BillingError
 import logging
@@ -86,7 +86,7 @@ async def system_load():
         logger.error(f"Failed to fetch system load: {e}")
         raise BillingError(detail=str(e))
 
-@router.get("/calculate/{concept}/{client_id}/{year}/{month}", response_model=List[ConceptResponse])
+@router.get("/calculate/{concept}/{client_id}/{year}/{month}")
 async def calculate_concept(concept: str,
     client_id: PositiveInt,
     year: int = Path(..., ge=2000, le=2100),
