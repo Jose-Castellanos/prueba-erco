@@ -38,6 +38,4 @@ class SystemLoadResponse(BaseModel):
     timestamp: datetime
     hourly_load: float
 
-class ConceptResponse(BaseModel):
-    concept : float
-   
+
